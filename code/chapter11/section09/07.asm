@@ -1,5 +1,5 @@
 ; 检测点11.3
-; (1) 补全下面的程序，统计F000:0处 32个字节中，大小在[32,128]的数据的个数。
+; (2) 补全下面的程序，统计F000:0处32个字节中，大小在(32,128)的数据的个数。
 
 assume cs:code
 data segment
@@ -14,9 +14,9 @@ code segment
             mov  cx,32
       s:    mov  al,[bx]
             cmp  al,32
-            jb   s0             ; al<32 跳到s0
+            jna  s0             ; al<=32 跳到s0
             cmp  al,128
-            ja   s0             ; al>128 跳到s0
+            jnb  s0             ; al>=128 跳到s0
             inc  dx
       s0:   inc  bx
             loop s
