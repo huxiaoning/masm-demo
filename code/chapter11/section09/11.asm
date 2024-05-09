@@ -30,14 +30,11 @@ codesg segment
                jb   continue                 ; cl < 61H 不是小写字母
                cmp  cl,7AH
                ja   continue                 ; cl > 7AH 不是小写字母
-
                sub  cl,20H                   ; 转大写
-               mov  byte ptr ds:[si],cl
-
-
-      continue:inc  si
+               mov  byte ptr ds:[si],cl      ; 回写内存
+      continue:
+               inc  si
                jmp  short s
-
       break:   
                pop  si
                pop  cx
