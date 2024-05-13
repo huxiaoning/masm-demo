@@ -14,7 +14,11 @@ code segment
                 cld                                       ; 设置传输方向为正
                 rep  movsb
 
-       ; 设置中断向量表
+                mov  ax,0
+                mov  es,ax
+                mov  word ptr es:[0*4],200h
+                mov  word ptr es:[0*4+2],0                ; 设置中断向量表
+                
                 mov  ax,4c00h
                 int  21h
 
