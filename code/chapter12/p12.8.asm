@@ -1,10 +1,17 @@
 assume cs:code
 code segment
       start:
-      ; 设置 es：di 指向目的地址
-      ; 设置 ds：si 指向源地址
-      ; 设置 cx 为传输长度
-      ; 设置传输方向为正
+            mov ax,cs
+            mov ds,ax
+            mov si,offset do0      ; 设置 ds:si 指向源地址
+
+            mov ax,0
+            mov es,ax
+            mov di,200H            ; 设置 es:di 指向目的地址
+
+            mov cx,do0部分代码的长度      ; 设置 cx 为传输长度
+      
+            cld                    ; 设置传输方向为正
             rep movsb
 
       ; 设置中断向量表
