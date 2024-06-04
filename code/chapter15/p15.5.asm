@@ -49,7 +49,7 @@ code segment
              mov   es,ax
              mov   bx,1
              mov   cx,2000
-     S:      
+     s:      
              add   bx,2
              inc   byte ptr es:[bx]
              loop  s
