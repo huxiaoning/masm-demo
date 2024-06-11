@@ -1,6 +1,13 @@
 assume cs:code
+stack segment
+          db 128 dup(0)
+stack ends
 code segment
-    start:mov ah,1
+    start:mov ax,stack
+          mov ss,ax
+          mov sp,128
+          
+          mov ah,1
           mov al,2
           int 7ch
 
