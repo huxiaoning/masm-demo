@@ -4,14 +4,18 @@ code segment
         setscreen:   jmp  short set                                         ; (jmp 020AH)
         table        dw   sub1, sub2, sub3, sub4                            ; dw 004A,0065,0083,00A5 (这个是安装时的值，有问题？？？！！！)
         set:         push bx                                                ; (020AH)
+                     push ds
                      cmp  ah, 3                                             ; 判断功能号是否大于 3
                      ja   sret
+                     mov  bx,0
+                     mov  ds,bx
                      mov  bl,ah
                      mov  bh,0
                      add  bx,bx                                             ; 根据ah中的功能号计算对应子程序在table表中的偏移
-                     call word ptr table[bx]                                ; 调用对应的功能子程序
-        sret:        pop  bx
-                     ret
+                     call word ptr ds:table[bx]                         ; 调用对应的功能子程序(TODO 这里调用的是cs:[bx]但其实应该是0:[bx]才对,应该如何处理)
+        sret:        pop  ds
+                     pop  bx
+                     iret
         
         sub1:        push bx                                                ; (021D)
                      push cx
