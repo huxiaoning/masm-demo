@@ -1,32 +1,5 @@
 assume cs:code
-stack segment
-              db 128 dup(0)
-stack ends
 code segment
-
-        start:       mov  ax,stack
-                     mov  ss,ax
-                     mov  sp,128
-        
-                     mov  ax,cs
-                     mov  ds,ax
-                     mov  si,offset setscreen                               ; 设置 ds:si 指向源地址 (setscreen=002DH)
-
-                     mov  ax,0
-                     mov  es,ax
-                     mov  di,200H                                           ; 设置 es:di 指向目的地址
-
-                     mov  cx,offset setscreenend -  offset setscreen        ; 设置 cx 为传输长度 (setscreenend-setscreen=00ADH)
-                     cld                                                    ; 设置传输方向为正
-                     rep  movsb                                             ; 复制
-
-                     mov  ax,0
-                     mov  es,ax
-                     mov  word ptr es:[7ch*4],200h
-                     mov  word ptr es:[7ch*4+2],0                           ; 设置中断向量表
-
-                     mov  ax,4c00h
-                     int  21h
 
         setscreen:   jmp  short set                                         ; (jmp 020AH)
         table        dw   sub1, sub2, sub3, sub4                            ; dw 004A,0065,0083,00A5 (这个是安装时的值，有问题？？？！！！)
@@ -118,5 +91,25 @@ code segment
                      pop  cx
                      ret
         setscreenend:nop
+
+        start:       mov  ax,cs
+                     mov  ds,ax
+                     mov  si,offset setscreen                               ; 设置 ds:si 指向源地址 (setscreen=002DH)
+
+                     mov  ax,0
+                     mov  es,ax
+                     mov  di,200H                                           ; 设置 es:di 指向目的地址
+
+                     mov  cx,offset setscreenend -  offset setscreen        ; 设置 cx 为传输长度 (setscreenend-setscreen=00ADH)
+                     cld                                                    ; 设置传输方向为正
+                     rep  movsb                                             ; 复制
+
+                     mov  ax,0
+                     mov  es,ax
+                     mov  word ptr es:[7ch*4],200h
+                     mov  word ptr es:[7ch*4+2],0                           ; 设置中断向量表
+
+                     mov  ax,4c00h
+                     int  21h
 code ends
 end start
