@@ -1,6 +1,6 @@
 assume cs:code
 code segment
-                     db   200H dup(0)                                       ; 下面的程序安装在0:200H处，这里占200字节空间，以确保下面的标号从200H后顺延
+                     db   200H dup(0)                                       ; 下面的程序安装在0:200H处，这里占200H字节空间，以确保下面的标号从200H后顺延
         setscreen:   jmp  short set
         table        dw   sub1, sub2, sub3, sub4
         set:         push bx
