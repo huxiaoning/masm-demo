@@ -1,19 +1,19 @@
 assume cs:code
 code segment
                      db   200 dup(0)                                        ; 下面的程序安装在0:200H处，这里占200字节空间，以确保下面的标号从200H后顺延
-        setscreen:   jmp  short set                                         ; (jmp 020AH)
-        table        dw   sub1, sub2, sub3, sub4                            ; dw 004A,0065,0083,00A5 (这个是安装时的值，有问题？？？！！！)
-        set:         push bx                                                ; (020AH)
+        setscreen:   jmp  short set
+        table        dw   sub1, sub2, sub3, sub4
+        set:         push bx
                      cmp  ah, 3                                             ; 判断功能号是否大于 3
                      ja   sret
                      mov  bl,ah
                      mov  bh,0
                      add  bx,bx                                             ; 根据ah中的功能号计算对应子程序在table表中的偏移
-                     call word ptr table[bx]                                ; 调用对应的功能子程序(TODO 这里调用的是cs:[bx]但其实应该是0:[bx]才对,应该如何处理)
+                     call word ptr table[bx]                                ; 调用对应的功能子程序
         sret:        pop  bx
                      iret
         
-        sub1:        push bx                                                ; (021D)
+        sub1:        push bx
                      push cx
                      push es
                      mov  bx,0b800h
