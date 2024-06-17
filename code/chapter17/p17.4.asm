@@ -3,7 +3,7 @@ code segment
 
            mov ax, 0
            mov es,ax
-           mov bx,200h
+           mov bx,200h      ; es:bx 指向接收从扇区读入数据的内存区
 
            mov al,1         ; (al)=读取的扇区数
            mov ch,0         ; (ch)=磁道号
