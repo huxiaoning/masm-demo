@@ -1,7 +1,13 @@
-assume cs:code
+assume cs:code,ds:data
+data segment
+           db 128 dup(0)      ; 用作字符栈
+data ends
 code segment
 
-      start:    call getstr
+      start:    mov  ax,data
+                mov  ds,ax
+                mov  si,0                            ; ds:si指向字符串首地址
+                call getstr
 
                 mov  ax,4c00h
                 int  21h
