@@ -1,6 +1,42 @@
 assume cs:code
 code segment
 
+      start:    call getstr
+
+                mov  ax,4c00h
+                int  21h
+
+      getstr:   push ax
+
+      getstrs:  mov  ah,0
+                int  16h                             ; 是从键盘缓冲区中读取一个键盘输入,结果: (ah)=扫描码，(al)=ASCII码。
+                cmp  al,20h
+                jb   nochar                          ; ASCII码小于20h，说明不是字符
+                mov  ah,0
+                call charstack                       ; 字符入栈
+                mov  ah,2
+                call charstack                       ; 显示栈中的字符
+                jmp  getstrs
+
+      nochar:   cmp  ah,0eh                          ; 退格键的扫描码
+                je   backspace
+                cmp  ah,1ch
+                je   enter                           ; Enter 键的扫描码
+                jmp  getstrs
+
+      backspace:mov  ah,1
+                call charstack                       ; 字符出栈
+                mov  ah,2
+                call charstack                       ; 显示栈中的字符
+                jmp  getstrs
+
+      enter:    mov  al,0
+                mov  ah,0
+                call charstack                       ; 0 入栈
+                mov  ah,2
+                call charstack                       ; 显示栈中的字符
+                pop  ax
+                ret
 
       ; 参数说明: (ah)=功能号，0表示入栈，1表示出栈，2表示显示ds:si指向字符栈空间；
       ; 对于0号功能: (al)=入栈字符；
