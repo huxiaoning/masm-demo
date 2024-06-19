@@ -1,6 +1,10 @@
 assume cs:code
 code segment
               db   200H dup(0)                             ; 下面的程序安装在0:200H处，这里占200H字节空间，以确保下面的标号从200H后顺延
+    ; 参数说明：
+    ; (1) 用ah寄存器传递功能号： 0表示读， 1表示写；
+    ; (2) 用dx寄存器传递要读写的扇区的逻辑扇区号；
+    ; (3) 用es:bx指向存储读出数据或写入数据的内存区。
     rwdisk:   
               push dx
               call analysis
