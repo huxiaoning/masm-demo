@@ -2,7 +2,7 @@ assume cs:code
 code segment
               db   200H dup(0)                             ; 下面的程序安装在0:200H处，这里占200H字节空间，以确保下面的标号从200H后顺延
     rwdisk:   
-    ; TODO hxn 用逻辑扇区(dx=2800)号计算出面号(dh)、磁道号(ch)、扇区号(cl)
+              push dx
               call analysis
 
               add  ah,2                                    ; 0读1写 转换成 2读3写
@@ -12,6 +12,7 @@ code segment
     ; 返回参数：
     ; 操作成功: (ah)=0，(al)=读(写)入的扇区数
     ; 操作失败: (ah)=出错代码
+              pop  dx
               iret
 
     ; 参数：dx 逻辑扇区号
