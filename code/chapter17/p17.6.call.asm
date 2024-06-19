@@ -1,9 +1,16 @@
-assume cs:code,ds:data
+assume cs:code,ss:stack,ds:data
+stack segment
+            db 128 dup(0)
+stack ends
 data segment
            db 512 dup(0)      ; 够存放1个扇区的空间
 data ends
 code segment
-      start:mov bx,data
+      start:mov ax,stack
+            mov ss,ax
+            mov sp,128
+      
+            mov bx,data
             mov es,bx
             mov bx,0          ; 用es:bx指向存储读出数据或写入数据的内存区。
 
